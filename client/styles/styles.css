@@ -82,9 +82,9 @@ form input[type=text] {
 .spinner img {
     padding: 10px;
 }
-textarea{
+/*textarea{
     height: 100px;
-}
+}*/
 .message{
     font-family: "Impact";
     text-shadow: "2px 2px red";

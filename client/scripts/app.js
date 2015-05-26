@@ -45,9 +45,13 @@ app.fetch = function(){
 };
 
 app.listFriends = function(userObjects){
+  var listedFriends = [];
+  $("#friendsList").empty();
   for(var i=0; i<userObjects.results.length; i++){
-    console.log(userObjects.results[i].username);
-    $("#friendsList").append("<li class='friendLI'>" + userObjects.results[i].username + "</li>");
+    if(listedFriends.indexOf(userObjects.results[i].username) === -1){
+      listedFriends.push(userObjects.results[i].username);
+      $("#friendsList").append("<li class='friendLI'>" + app.verify(userObjects.results[i].username + " - " + userObjects.results[i].text) + "</li>");
+    }
   }
 };
 
@@ -64,13 +68,29 @@ app.addRoom = function(string){
   $("#roomSelect").append("<p>" + string + "</p>");
 };
 
-
+var bestFriends = [];
 app.addFriend = function(){
 
 };
-$("#listFriendsButton").on("click", function(){
-  alert("hi");
+
+app.verify = function(input){
+  var regex = /(<([^>]+)>)/ig;
+  var result = input.replace(regex, '');
+  return result;
+};
+
+
+
+$(document).ready(function(){
+  $("#listFriendsButton").on("click", function(){
+   app.fetch();
+  });
+  // $("#sendMessageButton").on("click", function(){
+
+  //   app.send();
+  // })
 });
+
 
 
 
