@@ -50,9 +50,15 @@ app.listFriends = function(userObjects){
   for(var i=0; i<userObjects.results.length; i++){
     if(listedFriends.indexOf(userObjects.results[i].username) === -1){
       listedFriends.push(userObjects.results[i].username);
-      $("#friendsList").append("<li class='friendLI'>" + app.verify(userObjects.results[i].username + " - " + userObjects.results[i].text) + "</li>");
+      $("#friendsList").append("<li class='friendLI'><span class='username'>" + app.verify(userObjects.results[i].username
+        + "</span> - " + "<span class='messageText'>" + userObjects.results[i].text) + "</span></li>");
     }
   }
+  $(".username").on("click", function(){
+    $("#bestFriendsList").append("<li>" + $(this).text() +   "</li>")
+    debugger;
+  });
+
 };
 
 app.clearMessages = function(){
@@ -79,16 +85,16 @@ app.verify = function(input){
   return result;
 };
 
-
+app.fetch();
 
 $(document).ready(function(){
   $("#listFriendsButton").on("click", function(){
    app.fetch();
   });
-  // $("#sendMessageButton").on("click", function(){
+  $(window).on("click", ".username", function(){
+    alert("sup brah");
+  });
 
-  //   app.send();
-  // })
 });
 
 
