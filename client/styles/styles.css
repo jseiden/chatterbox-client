@@ -82,10 +82,24 @@ form input[type=text] {
 .spinner img {
     padding: 10px;
 }
-/*textarea{
-    height: 100px;
-}*/
+input[type = "text"]{
+  border:2px solid black;
+  margin: 5px;
+  box-shadow: 3px 3px red;
+}
+fieldset{
+    box-shadow: 6px 6px red;
+    margin: 5px;
+    width: 500px;
+}
+*{
+    font-family: Impact;
+
+}
 .message{
     font-family: "Impact";
     text-shadow: "2px 2px red";
+}
+.username{
+    color: blue;
 }

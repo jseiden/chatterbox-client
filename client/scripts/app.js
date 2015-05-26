@@ -16,6 +16,7 @@ app.send = function(message){
     success: function (data) {
       console.log('chatterbox: Message sent');
       console.log(data);
+      console.log(message);
     },
     error: function (data) {
       console.error('chatterbox: Failed to send message');
@@ -48,15 +49,14 @@ app.listFriends = function(userObjects){
   var listedFriends = [];
   $("#friendsList").empty();
   for(var i=0; i<userObjects.results.length; i++){
-    if(listedFriends.indexOf(userObjects.results[i].username) === -1){
+    if(listedFriends.indexOf(userObjects.results[i].message) === -1){
       listedFriends.push(userObjects.results[i].username);
-      $("#friendsList").append("<li class='friendLI'><span class='username'>" + app.verify(userObjects.results[i].username
-        + "</span> - " + "<span class='messageText'>" + userObjects.results[i].text) + "</span></li>");
+      $("#friendsList").append("<li class='friendLI'><span class='username'>" + app.verify(userObjects.results[i].username)
+        + "</span> - " + "<span class='messageText'>" + app.verify(userObjects.results[i].text) + "</span></li>");
     }
   }
   $(".username").on("click", function(){
-    $("#bestFriendsList").append("<li>" + $(this).text() +   "</li>")
-    debugger;
+    app.addFriend(this);
   });
 
 };
@@ -67,7 +67,9 @@ app.clearMessages = function(){
 
 app.addMessage = function(message){
   $('#chats')
-    .append('<div class="message"><span class = "username">' + message.username +'</span><br><span class="text">' + message.text + '</span><br><span class="room">' + message.roomname + '</span></div>');
+    .append('<div class="message"><span class = "username">' + message.username
+      +'</span><br><span class="text">' + message.text + '</span><br><span class="room">'
+      + message.roomname + '</span></div>');
 };
 
 app.addRoom = function(string){
@@ -75,25 +77,35 @@ app.addRoom = function(string){
 };
 
 var bestFriends = [];
-app.addFriend = function(){
-
+app.addFriend = function(friend){
+    $("#bestFriendsList").append("<li>" + $(friend).text() + "</li>")
 };
 
 app.verify = function(input){
-  var regex = /(<([^>]+)>)/ig;
-  var result = input.replace(regex, '');
-  return result;
+  if(input){
+    var regex = /(<([^>]+)>)/ig;
+    var result = input.replace(regex, '');
+    return result;
+  }
 };
 
+//gets friends on load
 app.fetch();
 
 $(document).ready(function(){
   $("#listFriendsButton").on("click", function(){
    app.fetch();
   });
-  $(window).on("click", ".username", function(){
-    alert("sup brah");
+  $("#sendMessageButton").on("click", function(){
+    var messageObject = {};
+    messageObject.username = $("#usernameInput").val();
+    messageObject.roomname = $("#roomnameInput").val();
+    messageObject.text = $("#textInput").val();
+    app.send(messageObject);
   });
+
+
+
 
 });
 

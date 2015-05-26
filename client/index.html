@@ -18,15 +18,16 @@
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
       <form id="mainForm">
-        <textarea>
-        </textarea>
+        <input type="text" placeholder="username" id="usernameInput"></input><br>
+        <input type="text" placeholder="roomname" id="roomnameInput"></input><br>
+        <input type="text" placeholder="ur message" id="textInput"</input>
         <br>
         <input type="button" value="submit" id="sendMessageButton">
         <input type="button" value="list friends" id="listFriendsButton"></input>
       </form>
 
       <fieldset>
-        <legend>Amigos</legend>
+        <legend>Message Feed</legend>
         <div>
           <ul id="friendsList"></ul>
         </div>
