@@ -7,7 +7,7 @@
 
     <!-- dependencies -->
     <script src="bower_components/jquery/jquery.min.js"></script>
-    <script src="bower_components/underscore/underscore.min.js"></script>
+    <script src="bower_components/underscore/underscore-min.js"></script>
     <!-- your scripts -->
 
     <script src="env/config.js"></script>
@@ -24,13 +24,14 @@
         <br>
         <input type="button" value="submit" id="sendMessageButton">
         <input type="button" value="list friends" id="listFriendsButton"></input>
-        <select id="roomsMenu">
-          <option selected="selected">pick a room..any room</option>
+        <input type="button" value="clear" id="clearButton"></input>
+                <select id="roomsMenu">
+          <option selected="selected" class="roomOption">pick a room..any room</option>
         </select>
       </form>
       <div id="chats">
         <fieldset>
-          <legend>Room Feed</legend>
+          <legend id="roomFeedLegend">Room Feed</legend>
           <div>
             <ul id="friendsList"></ul>
           </div>

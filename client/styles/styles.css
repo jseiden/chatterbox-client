@@ -12,7 +12,7 @@ body {
     width: 500px;
     margin: auto;
     text-align: left;
-    background: #3D579D;
+    background: #4D579D;
     padding: 50px 60px;
     border: solid #ddd;
     border-width: 0 1px 1px 1px;
@@ -102,7 +102,7 @@ fieldset{
     text-shadow: "2px 2px black";
 }
 .username{
-    color: blue;
+    color: orange;
 }
 .username:hover{
     text-shadow: 1px 1px white;

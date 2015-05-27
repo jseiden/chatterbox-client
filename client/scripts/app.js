@@ -36,6 +36,7 @@ app.fetch = function(){
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
+      console.log(data);
       // userObjects = data;
       app.listFriends(data);
     },
@@ -51,6 +52,7 @@ app.listFriends = function(userObjects){
   var bestFriends = [];
   var rooms = [];
   $("#friendsList").empty();
+  $("#roomFeedLegend").text("Lobby");
   for(var i=0; i<userObjects.results.length; i++){
     if(listedFriends.indexOf(userObjects.results[i].username) === -1 && userObjects.results[i].username){
       listedFriends.push(userObjects.results[i].username);
@@ -71,10 +73,44 @@ app.listFriends = function(userObjects){
       $(this).css("color", "white");
     }
   });
+  //also rooms
   $("#roomsMenu").change(function(){
-    alert("hello sir");
-  });
+    var selectedOption;
+    $(this).find(".roomOption").each(function(){
+      if(this.selected){
+        selectedOption = $(this).val();
+        if(selectedOption === "pick a room..any room"){
+          app.fetch();
+          return;
+        }
+        console.log(selectedOption);  //for test
+        $("#roomFeedLegend").text(selectedOption);
+        var clear = false;
+        $(userObjects.results).each(function(){
+           if(this.roomname === selectedOption){
+              if(clear === false){
+                 $("#friendsList").empty();
+                 clear = true;
+              }
+              $("#friendsList").append("<li class='friendLI'><span class='username'>"
+              + app.verify(this.username)
+              + "</span> - " + "<span class='messageText'>" + app.verify(this.text) + "</span></li>");
+           }
+        /////This can be factored out because it's repetetive
+        $(".username").on("click", function(){
+          if(bestFriends.indexOf(this) === -1){
+              bestFriends.push(this);
+              app.addFriend(this);
+              $(this).css("color", "white");
+             }
+           });
+        ///////////////////////////////////////////////////////
+        });
+        clear = false;
 
+      }
+    });
+  });
 };
 
 app.clearMessages = function(){
@@ -108,9 +144,11 @@ app.verify = function(input){
 app.fetch();
 
 $(document).ready(function(){
+//list friends button
   $("#listFriendsButton").on("click", function(){
    app.fetch();
   });
+//send message button
   $("#sendMessageButton").on("click", function(){
     var messageObject = {};
     messageObject.username = $("#usernameInput").val();
@@ -119,9 +157,12 @@ $(document).ready(function(){
     app.send(messageObject);
     app.fetch();
   });
+  // clear messages
+  // $("#clearButton").on("click", function(){
+  //   app.clearMessages();
+  // });
 });
-$("#chats").css("background-color", "orange");
-
+// $("#chats").css("background-color", "orange");
 
 
 
