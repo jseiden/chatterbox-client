@@ -14,6 +14,8 @@ app.send = function(message){
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
+      //if there is no data, don't do anything
+      if(!data.results || !data.results.length){return;}
       console.log('chatterbox: Message sent');
       console.log(data);
       console.log(message);
@@ -34,7 +36,6 @@ app.fetch = function(){
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
-      console.log(data);
       // userObjects = data;
       app.listFriends(data);
     },
@@ -47,16 +48,31 @@ app.fetch = function(){
 
 app.listFriends = function(userObjects){
   var listedFriends = [];
+  var bestFriends = [];
+  var rooms = [];
   $("#friendsList").empty();
   for(var i=0; i<userObjects.results.length; i++){
-    if(listedFriends.indexOf(userObjects.results[i].message) === -1){
+    if(listedFriends.indexOf(userObjects.results[i].username) === -1 && userObjects.results[i].username){
       listedFriends.push(userObjects.results[i].username);
       $("#friendsList").append("<li class='friendLI'><span class='username'>" + app.verify(userObjects.results[i].username)
         + "</span> - " + "<span class='messageText'>" + app.verify(userObjects.results[i].text) + "</span></li>");
     }
-  }
+    //rooms
+    if(rooms.indexOf(userObjects.results[i].roomname) === -1 && userObjects.results[i].roomname){
+      rooms.push(userObjects.results[i].roomname);
+      $("#roomsMenu").append("<option class='roomOption'>" + app.verify(userObjects.results[i].roomname) + "</option>");
+    }
+  };
+  //onclick adds bestFriends
   $(".username").on("click", function(){
-    app.addFriend(this);
+    if(bestFriends.indexOf(this) === -1){
+      bestFriends.push(this);
+      app.addFriend(this);
+      $(this).css("color", "white");
+    }
+  });
+  $("#roomsMenu").change(function(){
+    alert("hello sir");
   });
 
 };
@@ -76,7 +92,6 @@ app.addRoom = function(string){
   $("#roomSelect").append("<p>" + string + "</p>");
 };
 
-var bestFriends = [];
 app.addFriend = function(friend){
     $("#bestFriendsList").append("<li>" + $(friend).text() + "</li>")
 };
@@ -102,12 +117,10 @@ $(document).ready(function(){
     messageObject.roomname = $("#roomnameInput").val();
     messageObject.text = $("#textInput").val();
     app.send(messageObject);
+    app.fetch();
   });
-
-
-
-
 });
+$("#chats").css("background-color", "orange");
 
 
 
